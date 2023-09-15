@@ -13,6 +13,6 @@
         public List<Subasta> SubastasPublicadas { get; set; }
         public List<DetalleSubasta> DetallesSubasta { get; set; }
         public List<Venta> VentasPublicadas { get; set; }
-        public List<DetalleVenta> DetallesVenta { get; set; }s
+        public List<DetalleVenta> DetallesVenta { get; set; }
     }
 }

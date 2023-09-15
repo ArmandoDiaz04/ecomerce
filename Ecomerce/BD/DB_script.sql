@@ -54,7 +54,7 @@ monto_total decimal(10,2),
 id_estado int
 );
 go
-CREATE TABLE ESTAODO_SUBASTAS(
+CREATE TABLE ESTADO_SUBASTAS(
 id_estado int primary key,
 estado varchar(20)
 );
@@ -86,7 +86,7 @@ ALTER TABLE DETALLE_SUBASTAS ADD CONSTRAINT fk_detalle_usuarios foreign key (id_
 go
 ALTER TABLE DETALLE_SUBASTAS ADD CONSTRAINT fk_detalle_subasta foreign key (id_subasta) references SUBASTAS(id_subasta);
 go
-ALTER TABLE DETALLE_SUBASTAS ADD CONSTRAINT fk_detalle_estado foreign key (id_estado) references ESTAODO_SUBASTAS(id_estado) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE DETALLE_SUBASTAS ADD CONSTRAINT fk_detalle_estado foreign key (id_estado) references ESTADO_SUBASTAS(id_estado) ON DELETE CASCADE ON UPDATE CASCADE;
 go
 ALTER TABLE VENTAS ADD CONSTRAINT fk_venta_productos foreign key (id_producto) references PRODUCTOS(id_producto) ON DELETE CASCADE ON UPDATE CASCADE;
 go
