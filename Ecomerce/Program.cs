@@ -1,7 +1,10 @@
+using Ecomerce.BD;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<equiposContext>(
+builder.Services.AddDbContext<comercioDbContext>(
     option => option.UseSqlServer(
             builder.Configuration.GetConnectionString("dbConnection")
         ));
