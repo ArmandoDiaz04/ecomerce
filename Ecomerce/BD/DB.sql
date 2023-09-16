@@ -1,5 +1,7 @@
 Use master;
 go
+drop database Ecommerce;
+go
 create database Ecommerce;
 go
 use Ecommerce;
@@ -92,7 +94,3 @@ ALTER TABLE producto
 
 ALTER TABLE carrito
   ADD CONSTRAINT FK_carrito_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE ON UPDATE CASCADE;
-
-  ALTER TABLE carrito
-  ADD CONSTRAINT FK_carrito_producto FOREIGN KEY (id_producto) REFERENCES producto(id_producto) ON DELETE CASCADE ON UPDATE CASCADE;
-

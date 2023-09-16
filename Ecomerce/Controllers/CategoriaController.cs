@@ -58,8 +58,8 @@ namespace Ecomerce.Controllers
         {
             try
             {
-                _equipoContext.Categorias.Add(categoria);
-                _equipoContext.SaveChanges();
+                _context.categoria.Add(categoria);
+                _context.SaveChanges();
 
                 return Ok(categoria);
             }
@@ -75,7 +75,7 @@ namespace Ecomerce.Controllers
         [Route("Categoria/Actualizar/{id}")]
         public IActionResult ActualizarCategoria(int id, [FromBody] Categoria categoria)
         {
-            Categoria categoriaExistente = _equipoContext.Categorias.Find(id);
+            Categoria categoriaExistente = _context.categoria.Find(id);
 
             if (categoriaExistente == null)
             {
@@ -85,8 +85,8 @@ namespace Ecomerce.Controllers
             categoriaExistente.Descripcion = categoria.Descripcion;
             // Otras propiedades que desees actualizar
 
-            _equipoContext.Entry(categoriaExistente).State = EntityState.Modified;
-            _equipoContext.SaveChanges();
+            _context.Entry(categoriaExistente).State = EntityState.Modified;
+            _context.SaveChanges();
 
             return Ok(categoriaExistente);
         }
@@ -97,17 +97,17 @@ namespace Ecomerce.Controllers
         [Route("Categoria/Delete/{id}")]
         public IActionResult EliminarCategoria(int id)
         {
-            Categoria categoriaExistente = _equipoContext.Categorias.Find(id);
+            Categoria categoriaExistente = _context.categoria.Find(id);
 
             if (categoriaExistente == null)
             {
                 return NotFound();
             }
+            //momento de agregar estado = 0 == activo
+            categoriaExistente.Estado = 0;
 
-            categoriaExistente.Estado = "C";
-
-            _equipoContext.Entry(categoriaExistente).State = EntityState.Modified;
-            _equipoContext.SaveChanges();
+            _context.Entry(categoriaExistente).State = EntityState.Modified;
+            _context.SaveChanges();
 
             return Ok(categoriaExistente);
         }
