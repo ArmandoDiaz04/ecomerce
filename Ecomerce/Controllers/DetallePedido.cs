@@ -6,11 +6,12 @@ namespace Ecomerce.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubastaController : ControllerBase
+    public class DetallePedido : ControllerBase
     {
+
         private readonly comercioDbContext _context;
 
-        public SubastaController(comercioDbContext context)
+        public DetallePedido(comercioDbContext context)
         {
             _context = context;
         }

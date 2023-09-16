@@ -4,7 +4,8 @@
     {
         public int IdCarrito { get; set; }
         public int IdUsuario { get; set; }
-        public decimal TotalPagar { get; set; }
-        public Usuario Usuario { get; set; }
+        public int IdProducto { get; set; }
+        public int Cantidad { get; set; }
+        public DateTime FechaAgregado { get; set; }
     }
 }
