@@ -8,29 +8,29 @@ namespace Ecomerce.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class DetallePedidoController : ControllerBase
     {
+
         private readonly comercioDbContext _context;
 
-        public UsuarioController(comercioDbContext context)
+        public DetallePedidoController(comercioDbContext context)
         {
             _context = context;
         }
-
 
         #region GET_ALL - GET
         [HttpGet]
         [Route("GetAll")]
         public ActionResult Get()
         {
-            List<Usuario> listadoEquipos = _context.usuarios.ToList();
+            List<DetallePedido> detallePedidos = _context.detallepedido.ToList();
 
-            if (listadoEquipos.Count == 0)
+            if (detallePedidos.Count == 0)
             {
                 return NotFound();
             }
 
-            return Ok(listadoEquipos);
+            return Ok(detallePedidos);
         }
 
         #endregion
@@ -40,28 +40,28 @@ namespace Ecomerce.Controllers
         [Route("GetById")]
         public ActionResult GetById(int id)
         {
-            Usuario? usuario = _context.usuarios.Find(id);
+            DetallePedido? detalle = _context.detallepedido.Find(id);
 
-            if (usuario == null) return NotFound();
+            if (detalle == null) return NotFound();
 
-            return Ok(usuario);
+            return Ok(detalle);
         }
         #endregion
 
-        
+
 
         #region AGREGAR - POST
         [HttpPost]
         [Route("add")]
-        public IActionResult crear([FromBody] Usuario usuario)
+        public IActionResult crear([FromBody] DetallePedido detalle)
         {
 
             try
             {
-                _context.usuarios.Add(usuario);
+                _context.detallepedido.Add(detalle);
                 _context.SaveChanges();
 
-                return Ok(usuario);
+                return Ok(detalle);
 
             }
             catch (Exception ex)
@@ -76,26 +76,25 @@ namespace Ecomerce.Controllers
 
         [HttpPut]
         [Route("Actualizar/{id}")]
-        public IActionResult actualizar(int id, [FromBody] Usuario usuario)
+        public IActionResult actualizar(int id, [FromBody] DetallePedido detallePedido)
         {
-            Usuario? usuarios = _context.usuarios.Find(id);
+            DetallePedido? detalle = _context.detallepedido.Find(id);
 
-            if (usuarios == null)
+            if (detalle == null)
             {
                 return NotFound();
             }
 
-            usuarios.nombre_usuario = usuario.nombre_usuario;
-            usuarios.apellido_usuario = usuario.apellido_usuario;
-            usuarios.Correo = usuario.Correo;
-            usuarios.Telefono = usuario.Telefono;
-            usuarios.Direccion = usuario.Direccion;
-            usuarios.Password = usuario.Password;
+            detalle.id_producto = detallePedido.id_producto;
+            detalle.id_pedido = detallePedido.id_pedido;
+            detalle.Cantidad = detallePedido.Cantidad;
 
-            _context.Entry(usuarios).State = EntityState.Modified;
+
+
+            _context.Entry(detalle).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return Ok(usuarios);
+            return Ok(detalle);
 
         }
 
@@ -104,17 +103,15 @@ namespace Ecomerce.Controllers
         #region ELIMINAR - DELETE 
         [HttpDelete]
         [Route("deleteUsuario/{id}")]
-        public void DeleteUsuario(int id)
+        public void DeleteCarrito(int id)
         {
-            var usuario = _context.Set<Usuario>().FirstOrDefault(u => u.id_usuario == id);
-            if (usuario != null)
+            var detalle = _context.Set<DetallePedido>().FirstOrDefault(u => u.id_detalle == id);
+            if (detalle != null)
             {
-                _context.Set<Usuario>().Remove(usuario);
+                _context.Set<DetallePedido>().Remove(detalle);
                 _context.SaveChanges();
             }
         }
         #endregion
-
-
     }
 }

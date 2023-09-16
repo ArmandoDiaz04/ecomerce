@@ -1,15 +1,16 @@
-﻿namespace Ecomerce.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Ecomerce.Models
 {
     public class Usuario
     {
-        public int IdUsuario { get; set; }
-        public string NombreUsuario { get; set; }
-        public string ApellidoUsuario { get; set; }
+        [Key]
+        public int id_usuario { get; set; }
+        public string nombre_usuario { get; set; }
+        public string apellido_usuario { get; set; }
         public string Correo { get; set; }
         public string Telefono { get; set; }
         public string Direccion { get; set; }
-        public string Sexo { get; set; }
-        public int Rol { get; set; }
         public string Password { get; set; }
     }
 }

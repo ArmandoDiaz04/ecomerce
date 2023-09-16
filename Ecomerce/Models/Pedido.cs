@@ -1,12 +1,15 @@
-﻿namespace Ecomerce.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Ecomerce.Models
 {
     public class Pedido
     {
-        public int IdPedido { get; set; }
-        public double TotalPagar { get; set; }
-        public DateTime FechaPedido { get; set; }
-        public int IdEstadoPedido { get; set; }
-        public int IdUsuario { get; set; }
+        [Key]
+        public int id_pedido { get; set; }
+        public double total_pagar { get; set; }
+        public DateTime fecha_pedido { get; set; }
+        public int id_estado_pedido { get; set; }
+        public int id_usuario { get; set; }
         public string Ubicacion { get; set; }
     }
 }

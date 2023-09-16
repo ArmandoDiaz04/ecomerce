@@ -1,17 +1,20 @@
-﻿namespace Ecomerce.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Ecomerce.Models
 {
     public class Producto
     {
-        public int IdProducto { get; set; }
+        [Key]
+        public int id_producto { get; set; }
         public string Nombre { get; set; }
         public decimal Precio { get; set; }
-        public decimal? PrecioSubasta { get; set; }
-        public string ImagenUrl { get; set; }
+        public decimal? precio_subasta { get; set; }
+        public string imagen_url { get; set; }
         public string Descripcion { get; set; }
-        public int IdCategoria { get; set; }
+        public int id_categoria { get; set; }
         public int Estado { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFinal { get; set; }
-        public string TipoProducto { get; set; }
+        public DateTime fecha_inicio { get; set; }
+        public DateTime fecha_final { get; set; }
+        public string tipo_producto { get; set; }
     }
 }

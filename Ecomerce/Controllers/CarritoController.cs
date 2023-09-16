@@ -2,6 +2,7 @@
 using Ecomerce.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ecomerce.Controllers
 {
@@ -18,43 +19,101 @@ namespace Ecomerce.Controllers
             _context = context;
         }
 
+        #region GET_ALL - GET
         [HttpGet]
-        [Route("getAll")]
-        public List<Carrito> GetAllCarritos()
+        [Route("GetAll")]
+        public ActionResult Get()
         {
-            return _context.Set<Carrito>().ToList();
+            List<Carrito> carritos = _context.carrito.ToList();
+
+            if (carritos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(carritos);
         }
+
+        #endregion
+
+        #region GET_BY_ID - GET
         [HttpGet]
-        [Route("getbyID/(id)")]
-        public Carrito GetCarritoById(int id)
+        [Route("GetById")]
+        public ActionResult GetById(int id)
         {
-            return _context.Set<Carrito>().FirstOrDefault(c => c.IdCarrito == id);
+            Usuario? usuario = _context.usuarios.Find(id);
+
+            if (usuario == null) return NotFound();
+
+            return Ok(usuario);
         }
+        #endregion
+
+
+
+        #region AGREGAR - POST
         [HttpPost]
-        [Route("Add")]
-        public void AddCarrito(Carrito carrito)
+        [Route("add")]
+        public IActionResult crear([FromBody] Carrito carrito)
         {
-            _context.Set<Carrito>().Add(carrito);
-            _context.SaveChanges();
+
+            try
+            {
+                _context.carrito.Add(carrito);
+                _context.SaveChanges();
+
+                return Ok(carrito);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
+        #endregion
+
+        #region ACTUALIZAR - POST
+
         [HttpPut]
-        [Route("actualizar(id)")]
-        public void UpdateCarrito(Carrito carrito)
+        [Route("Actualizar/{id}")]
+        public IActionResult actualizar(int id, [FromBody] Carrito carrito)
         {
-            _context.Set<Carrito>().Update(carrito);
+            Carrito? carritosO = _context.carrito.Find(id);
+
+            if (carritosO == null)
+            {
+                return NotFound();
+            }
+
+            carritosO.id_usuario = carrito.id_usuario;
+            carritosO.id_producto = carrito.id_producto;
+            carritosO.Cantidad = carrito.Cantidad;
+            carritosO.fecha_agregado = carrito.fecha_agregado;
+
+
+            _context.Entry(carritosO).State = EntityState.Modified;
             _context.SaveChanges();
+
+            return Ok(carritosO);
+
         }
+
+        #endregion
+
+        #region ELIMINAR - DELETE 
         [HttpDelete]
-        [Route("delete(id)")]
+        [Route("deleteUsuario/{id}")]
         public void DeleteCarrito(int id)
         {
-            var carrito = _context.Set<Carrito>().FirstOrDefault(c => c.IdCarrito == id);
-            if (carrito != null)
+            var usuario = _context.Set<Usuario>().FirstOrDefault(u => u.id_usuario == id);
+            if (usuario != null)
             {
-                _context.Set<Carrito>().Remove(carrito);
+                _context.Set<Usuario>().Remove(usuario);
                 _context.SaveChanges();
             }
         }
+        #endregion
 
     }
 }

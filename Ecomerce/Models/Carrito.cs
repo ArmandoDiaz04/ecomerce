@@ -1,11 +1,14 @@
-﻿namespace Ecomerce.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Ecomerce.Models
 {
     public class Carrito
     {
-        public int IdCarrito { get; set; }
-        public int IdUsuario { get; set; }
-        public int IdProducto { get; set; }
+        [Key]  // Define IdCarrito as the primary key
+        public int id_carrito { get; set; }
+        public int id_usuario { get; set; }
+        public int id_producto { get; set; }
         public int Cantidad { get; set; }
-        public DateTime FechaAgregado { get; set; }
+        public DateTime fecha_agregado { get; set; }
     }
 }

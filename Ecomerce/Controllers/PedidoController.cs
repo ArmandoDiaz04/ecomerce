@@ -8,29 +8,28 @@ namespace Ecomerce.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class PedidoController : ControllerBase
     {
         private readonly comercioDbContext _context;
 
-        public UsuarioController(comercioDbContext context)
+        public PedidoController(comercioDbContext context)
         {
             _context = context;
         }
-
 
         #region GET_ALL - GET
         [HttpGet]
         [Route("GetAll")]
         public ActionResult Get()
         {
-            List<Usuario> listadoEquipos = _context.usuarios.ToList();
+            List<Pedido> pedidos = _context.pedido.ToList();
 
-            if (listadoEquipos.Count == 0)
+            if (pedidos.Count == 0)
             {
                 return NotFound();
             }
 
-            return Ok(listadoEquipos);
+            return Ok(pedidos);
         }
 
         #endregion
@@ -40,28 +39,28 @@ namespace Ecomerce.Controllers
         [Route("GetById")]
         public ActionResult GetById(int id)
         {
-            Usuario? usuario = _context.usuarios.Find(id);
+            Pedido? pedido = _context.pedido.Find(id);
 
-            if (usuario == null) return NotFound();
+            if (pedido == null) return NotFound();
 
-            return Ok(usuario);
+            return Ok(pedido);
         }
         #endregion
 
-        
+
 
         #region AGREGAR - POST
         [HttpPost]
         [Route("add")]
-        public IActionResult crear([FromBody] Usuario usuario)
+        public IActionResult crear([FromBody] Pedido pedido)
         {
 
             try
             {
-                _context.usuarios.Add(usuario);
+                _context.pedido.Add(pedido);
                 _context.SaveChanges();
 
-                return Ok(usuario);
+                return Ok(pedido);
 
             }
             catch (Exception ex)
@@ -76,26 +75,23 @@ namespace Ecomerce.Controllers
 
         [HttpPut]
         [Route("Actualizar/{id}")]
-        public IActionResult actualizar(int id, [FromBody] Usuario usuario)
+        public IActionResult actualizar(int id, [FromBody] Pedido pedido)
         {
-            Usuario? usuarios = _context.usuarios.Find(id);
+            Pedido? estado = _context.pedido.Find(id);
 
-            if (usuarios == null)
+            if (estado == null)
             {
                 return NotFound();
             }
 
-            usuarios.nombre_usuario = usuario.nombre_usuario;
-            usuarios.apellido_usuario = usuario.apellido_usuario;
-            usuarios.Correo = usuario.Correo;
-            usuarios.Telefono = usuario.Telefono;
-            usuarios.Direccion = usuario.Direccion;
-            usuarios.Password = usuario.Password;
+            estado.total_pagar = pedido.total_pagar;
 
-            _context.Entry(usuarios).State = EntityState.Modified;
+
+
+            _context.Entry(estado).State = EntityState.Modified;
             _context.SaveChanges();
 
-            return Ok(usuarios);
+            return Ok(estado);
 
         }
 
@@ -104,17 +100,15 @@ namespace Ecomerce.Controllers
         #region ELIMINAR - DELETE 
         [HttpDelete]
         [Route("deleteUsuario/{id}")]
-        public void DeleteUsuario(int id)
+        public void DeleteCarrito(int id)
         {
-            var usuario = _context.Set<Usuario>().FirstOrDefault(u => u.id_usuario == id);
-            if (usuario != null)
+            var pedido = _context.Set<Pedido>().FirstOrDefault(u => u.id_pedido == id);
+            if (pedido != null)
             {
-                _context.Set<Usuario>().Remove(usuario);
+                _context.Set<Pedido>().Remove(pedido);
                 _context.SaveChanges();
             }
         }
         #endregion
-
-
     }
 }

@@ -92,24 +92,17 @@ namespace Ecomerce.Controllers
         }
         #endregion
 
-        #region ELIMINAR - DELETE
+        #region ELIMINAR - DELETE 
         [HttpDelete]
-        [Route("Categoria/Delete/{id}")]
-        public IActionResult EliminarCategoria(int id)
+        [Route("deleteUsuario/{id}")]
+        public void DeleteCategoria(int id)
         {
-            Categoria categoriaExistente = _context.categoria.Find(id);
-
-            if (categoriaExistente == null)
+            var categoria = _context.Set<Categoria>().FirstOrDefault(u => u.id_categoria == id);
+            if (categoria != null)
             {
-                return NotFound();
+                _context.Set<Categoria>().Remove(categoria);
+                _context.SaveChanges();
             }
-            //momento de agregar estado = 0 == activo
-            categoriaExistente.Estado = 0;
-
-            _context.Entry(categoriaExistente).State = EntityState.Modified;
-            _context.SaveChanges();
-
-            return Ok(categoriaExistente);
         }
         #endregion
 
