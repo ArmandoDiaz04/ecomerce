@@ -3,6 +3,7 @@ using Ecomerce.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace Ecomerce.Controllers
 {
@@ -38,18 +39,24 @@ namespace Ecomerce.Controllers
 
 
         #region Login
-        [HttpGet]
-        [Route("logins")]
-        public ActionResult GetLogin(String correo, String password)
+        [HttpPost("login")]
+        public ActionResult GetLogin([FromBody] UsuarioLoginRequest request)
         {
-            Usuario? usuario = _context.usuarios.Where(u => u.Correo == correo && u.Password == password).FirstOrDefault();
+            if (request == null)
+            {
+                return BadRequest("Los datos de inicio de sesión son nulos o incorrectos.");
+            }
 
+            Usuario usuario = _context.usuarios.FirstOrDefault(u => u.Correo == request.Correo && u.Password == request.Password);
 
-            if (usuario == null) return NotFound();
+            if (usuario == null)
+            {
+                return NotFound("No se encontró un usuario con las credenciales proporcionadas.");
+            }
 
+            // Aquí puedes devolver el objeto usuario encontrado
             return Ok(usuario);
         }
-
         #endregion
 
 
