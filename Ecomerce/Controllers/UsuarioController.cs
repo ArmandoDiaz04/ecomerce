@@ -33,7 +33,26 @@ namespace Ecomerce.Controllers
             return Ok(listadoEquipos);
         }
 
+
         #endregion
+
+
+        #region Login
+        [HttpGet]
+        [Route("logins")]
+        public ActionResult GetLogin(String correo, String password)
+        {
+            Usuario? usuario = _context.usuarios.Where(u => u.Correo == correo && u.Password == password).FirstOrDefault();
+
+
+            if (usuario == null) return NotFound();
+
+            return Ok(usuario);
+        }
+
+        #endregion
+
+
 
         #region GET_BY_ID - GET
         [HttpGet]
