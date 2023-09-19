@@ -20,9 +20,25 @@ namespace Ecomerce.Controllers
         #region GET_ALL - GET
         [HttpGet]
         [Route("GetAll")]
-        public ActionResult Get()
+        public ActionResult Get([FromQuery] string? q, [FromQuery] int? limit)
         {
-            List<Producto> productos = _context.producto.ToList();
+            // Consulta la base de datos para obtener todos los productos
+            IQueryable<Producto> query = _context.producto;
+
+            // Filtra por el término 'q' si se proporciona
+            if (!string.IsNullOrEmpty(q))
+            {
+                query = query.Where(p => p.Nombre.Contains(q));
+            }
+
+            // Aplica el límite si se proporciona y es un valor positivo
+            if (limit.HasValue && limit.Value > 0)
+            {
+                query = query.Take(limit.Value);
+            }
+
+            // Ejecuta la consulta y obtiene los resultados
+            List<Producto> productos = query.ToList();
 
             if (productos.Count == 0)
             {
