@@ -19,5 +19,18 @@ namespace Ecomerce.BD
         public DbSet<Producto> producto { get; set; }
          public DbSet<Usuario> usuarios { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configurar las relaciones entre las entidades aquí
+            modelBuilder.Entity<Carrito>()
+                .HasOne(c => c.Usuario)
+                .WithMany()
+                .HasForeignKey(c => c.id_usuario);
+
+            modelBuilder.Entity<Carrito>()
+                .HasOne(c => c.Producto)
+                .WithMany()
+                .HasForeignKey(c => c.id_producto);
+        }
     }
 }

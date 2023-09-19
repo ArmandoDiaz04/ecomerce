@@ -22,9 +22,25 @@ namespace Ecomerce.Controllers
         #region GET_ALL - GET
         [HttpGet]
         [Route("GetAll")]
-        public ActionResult Get()
+        public ActionResult Get([FromQuery] string q)
         {
-            List<Carrito> carritos = _context.carrito.ToList();
+            if (string.IsNullOrEmpty(q))
+            {
+                // Si 'q' está vacío o nulo, retorna un error
+                return BadRequest("El parámetro 'q' (id_usuario) es obligatorio.");
+            }
+
+            if (!int.TryParse(q, out int id_usuario))
+            {
+                // Si 'q' no es un número válido, retorna un error
+                return BadRequest("El parámetro 'q' (id_usuario) debe ser un número entero válido.");
+            }
+
+            // Consulta la base de datos para obtener los carritos del usuario
+            IQueryable<Carrito> query = _context.carrito.Where(c => c.id_usuario == id_usuario);
+
+            // Ejecuta la consulta y obtiene los resultados
+            List<Carrito> carritos = query.ToList();
 
             if (carritos.Count == 0)
             {
@@ -33,6 +49,7 @@ namespace Ecomerce.Controllers
 
             return Ok(carritos);
         }
+
 
         #endregion
 
@@ -72,6 +89,47 @@ namespace Ecomerce.Controllers
 
         }
         #endregion
+
+
+        #region Carrito con nombre
+
+        [HttpGet]
+        [Route("Getbyname")]
+        public ActionResult Getbyname([FromQuery] string q)
+        {
+            if (string.IsNullOrEmpty(q) || !int.TryParse(q, out int id_usuario))
+            {
+                return BadRequest("El parámetro 'q' (id_usuario) es obligatorio y debe ser un número entero válido.");
+            }
+
+            var carritos = _context.carrito
+                .Where(c => c.id_usuario == id_usuario)
+                .Include(c => c.Usuario)  // Incluye la información del usuario
+                .Include(c => c.Producto) // Incluye la información del producto
+                .ToList();
+
+            if (carritos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            // Ahora puedes proyectar los resultados para mostrar nombres en lugar de IDs
+            var resultado = carritos.Select(c => new
+            {
+                IdCarrito = c.id_carrito,
+                NombreUsuario = c.Usuario.nombre_usuario,
+                NombreProducto = c.Producto.Nombre,
+                Cantidad = c.Cantidad,
+                FechaAgregado = c.fecha_agregado
+            });
+
+            return Ok(resultado);
+        }
+
+
+        #endregion
+
+
 
         #region ACTUALIZAR - POST
 
