@@ -66,28 +66,33 @@ namespace Ecomerce.Controllers
         }
         #endregion
 
-
-
         #region AGREGAR - POST
         [HttpPost]
         [Route("add")]
-        public IActionResult crear([FromBody] Carrito carrito)
+        public IActionResult crear([FromBody] CarritoSimplificado carrito)
         {
-
             try
             {
-                _context.carrito.Add(carrito);
+                // Crea una nueva instancia de Carrito con los datos simplificados
+                var carritoCompleto = new Carrito
+                {
+                    id_usuario = carrito.id_usuario,
+                    id_producto = carrito.id_producto,
+                    Cantidad = carrito.Cantidad,
+                    fecha_agregado = DateTime.Now // Puedes establecer la fecha actual aquí
+                };
+
+                _context.carrito.Add(carritoCompleto);
                 _context.SaveChanges();
 
-                return Ok(carrito);
-
+                return Ok(carritoCompleto);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
+
         #endregion
 
 
@@ -126,10 +131,7 @@ namespace Ecomerce.Controllers
             return Ok(resultado);
         }
 
-
         #endregion
-
-
 
         #region ACTUALIZAR - POST
 
@@ -161,16 +163,23 @@ namespace Ecomerce.Controllers
 
         #region ELIMINAR - DELETE 
         [HttpDelete]
-        [Route("deleteUsuario/{id}")]
-        public void DeleteCarrito(int id)
+        [Route("deleteCarrito/{id}")]
+        public IActionResult DeleteCarrito(int id)
         {
-            var usuario = _context.Set<Usuario>().FirstOrDefault(u => u.id_usuario == id);
-            if (usuario != null)
+            var carrito = _context.carrito.FirstOrDefault(c => c.id_carrito == id);
+            if (carrito != null)
             {
-                _context.Set<Usuario>().Remove(usuario);
+                _context.carrito.Remove(carrito);
                 _context.SaveChanges();
+                return Ok(new { message = "Carrito eliminado exitosamente." });
+            }
+            else
+            {
+                return NotFound(new { message = "Carrito no encontrado." });
             }
         }
+
+
         #endregion
 
     }
