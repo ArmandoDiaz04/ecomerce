@@ -16,5 +16,6 @@ namespace Ecomerce.Models
         public DateTime fecha_inicio { get; set; }
         public DateTime fecha_final { get; set; }
         public string tipo_producto { get; set; }
+        public int id_usuario { get; set; }
     }
 }
