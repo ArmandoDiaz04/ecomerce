@@ -118,20 +118,25 @@ namespace Ecomerce.Controllers
                 return NotFound();
             }
 
-            // Ahora puedes proyectar los resultados para mostrar nombres en lugar de IDs
+            // Proyecta los resultados para mostrar precio unitario y total
             var resultado = carritos.Select(c => new
             {
                 IdCarrito = c.id_carrito,
                 NombreUsuario = c.Usuario.nombre_usuario,
                 NombreProducto = c.Producto.Nombre,
+                PrecioUnitario = c.Producto.Precio / c.Cantidad, // Precio unitario
+                Total = c.Producto.Precio, // Total (precio del producto)
                 Cantidad = c.Cantidad,
                 FechaAgregado = c.fecha_agregado
             });
 
             return Ok(resultado);
         }
-
         #endregion
+
+        // hola cambios
+      
+
 
         #region ACTUALIZAR - POST
 
@@ -182,5 +187,30 @@ namespace Ecomerce.Controllers
 
         #endregion
 
+        #region ELIMINAR - DELETE- Q
+
+        [HttpDelete]
+        [Route("deleteCarritoByUsuario/{q}")]
+        public IActionResult DeleteCarritoByUsuario(int q)
+        {
+            var carritos = _context.carrito.Where(c => c.id_usuario == q).ToList();
+
+            if (carritos.Count > 0)
+            {
+                foreach (var carrito in carritos)
+                {
+                    _context.carrito.Remove(carrito);
+                }
+
+                _context.SaveChanges();
+                return Ok(new { message = "Carritos eliminados exitosamente para el usuario con id " + q });
+            }
+            else
+            {
+                return NotFound(new { message = "No se encontraron carritos para el usuario con id " + q });
+            }
+        }
+
+#endregion
     }
 }

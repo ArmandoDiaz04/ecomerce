@@ -17,13 +17,64 @@ namespace Ecomerce.Controllers
             _context = context;
         }
 
+
+        #region GET_ALL - GET
+        [HttpGet]
+        [Route("GetporId")]
+        public ActionResult Getall([FromQuery] int? limit)
+        {
+            IQueryable<Producto> query = null;
+
+            // Aplica el límite si se proporciona y es un valor positivo
+            if (limit.HasValue && limit.Value > 0)
+            {
+                // Consulta la base de datos para obtener todos los productos
+                query = _context.producto.Where(producto => producto.id_producto == limit);
+            }
+
+            // Ejecuta la consulta y obtiene los resultados
+            List<Producto> productos = query.ToList();
+
+            if (productos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(productos);
+        }
+
+        #endregion
+
         #region GET_ALL - GET
         [HttpGet]
         [Route("GetAll")]
-        public ActionResult Get([FromQuery] string? q, [FromQuery] int? limit)
+        public ActionResult Get([FromQuery] string? q, [FromQuery] int? limit, [FromQuery] string? tipo)
         {
             // Consulta la base de datos para obtener todos los productos
             IQueryable<Producto> query = _context.producto;
+
+            // Filtra por el tipo de producto si se proporciona (venta o Subasta)
+            if (!string.IsNullOrEmpty(tipo))
+            {
+                // Aplicamos la parte de la consulta en memoria después de obtener los resultados de la base de datos.
+                var productosFiltrados = query.ToList()
+                    .Where(p => p.tipo_producto.Equals(tipo, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                // Filtra por el término 'q' si se proporciona
+                if (!string.IsNullOrEmpty(q))
+                {
+                    productosFiltrados = productosFiltrados.Where(p => p.Nombre.Contains(q)).ToList();
+                }
+
+                // Aplica el límite si se proporciona y es un valor positivo
+                if (limit.HasValue && limit.Value > 0)
+                {
+                    productosFiltrados = productosFiltrados.Take(limit.Value).ToList();
+                }
+
+                return Ok(productosFiltrados);
+            }
 
             // Filtra por el término 'q' si se proporciona
             if (!string.IsNullOrEmpty(q))
@@ -47,8 +98,8 @@ namespace Ecomerce.Controllers
 
             return Ok(productos);
         }
-
         #endregion
+
 
         #region GET_BY_ID - GET
         [HttpGet]
@@ -62,6 +113,7 @@ namespace Ecomerce.Controllers
             return Ok(producto);
         }
         #endregion
+
 
 
 
@@ -86,6 +138,41 @@ namespace Ecomerce.Controllers
 
         }
         #endregion
+
+
+        #region ACTUALIZAR-Subasta
+        [HttpPut]
+        [Route("ActualizarSubasta/{id}")]
+        public IActionResult Actualizar(int id, [FromBody] PujaInputModel pujaInput)
+        {
+            Producto? producto = _context.producto.Find(id);
+
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            // Verifica si la puja es mayor que el precio actual de subasta antes de actualizar
+            if (pujaInput.PrecioPuja > producto.precio_subasta)
+            {
+                // Actualiza el precio de subasta y cualquier otro campo necesario
+                producto.precio_subasta = pujaInput.PrecioPuja;
+                producto.id_usuario_ultima_puja = pujaInput.IdUsuario;
+
+                _context.Entry(producto).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return Ok(producto);
+            }
+            else
+            {
+                return BadRequest("La puja debe ser mayor que el precio de subasta actual.");
+            }
+        }
+        #endregion
+
+
+
 
         #region ACTUALIZAR - POST
 
@@ -135,5 +222,10 @@ namespace Ecomerce.Controllers
             }
         }
         #endregion
+    }
+    public class PujaInputModel
+    {
+        public decimal PrecioPuja { get; set; }
+        public int IdUsuario { get; set; }
     }
 }

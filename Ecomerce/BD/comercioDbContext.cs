@@ -15,7 +15,7 @@ namespace Ecomerce.BD
          public DbSet<Categoria> categoria { get; set; }
         public DbSet<DetallePedido> detallepedido { get; set; }
         public DbSet<EstadoPedido> estadopedido { get; set; }
-        public DbSet<Pedido> pedido { get; set; }
+        public DbSet<Pedido> pedidos { get; set; }
         public DbSet<Producto> producto { get; set; }
          public DbSet<Usuario> usuarios { get; set; }
 

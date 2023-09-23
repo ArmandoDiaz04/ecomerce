@@ -17,12 +17,22 @@ namespace Ecomerce.Controllers
             _context = context;
         }
 
+
+
+
+    
+
+
+
+
+
+
         #region GET_ALL - GET
         [HttpGet]
         [Route("GetAll")]
         public ActionResult Get()
         {
-            List<Pedido> pedidos = _context.pedido.ToList();
+            List<Pedido> pedidos = _context.pedidos.ToList();
 
             if (pedidos.Count == 0)
             {
@@ -39,7 +49,7 @@ namespace Ecomerce.Controllers
         [Route("GetById")]
         public ActionResult GetById(int id)
         {
-            Pedido? pedido = _context.pedido.Find(id);
+            Pedido? pedido = _context.pedidos.Find(id);
 
             if (pedido == null) return NotFound();
 
@@ -54,20 +64,19 @@ namespace Ecomerce.Controllers
         [Route("add")]
         public IActionResult crear([FromBody] Pedido pedido)
         {
-
             try
             {
-                _context.pedido.Add(pedido);
+                // Agregar un punto de interrupción aquí o agregar un registro
+                _context.pedidos.Add(pedido);
                 _context.SaveChanges();
 
                 return Ok(pedido);
-
             }
             catch (Exception ex)
             {
+                // Agregar un punto de interrupción aquí o agregar un registro
                 return BadRequest(ex.Message);
             }
-
         }
         #endregion
 
@@ -77,7 +86,7 @@ namespace Ecomerce.Controllers
         [Route("Actualizar/{id}")]
         public IActionResult actualizar(int id, [FromBody] Pedido pedido)
         {
-            Pedido? estado = _context.pedido.Find(id);
+            Pedido? estado = _context.pedidos.Find(id);
 
             if (estado == null)
             {
@@ -110,5 +119,13 @@ namespace Ecomerce.Controllers
             }
         }
         #endregion
+    }
+    public class PedidoInputModel
+    {
+        public double total_pagar { get; set; }
+        public DateTime fecha_pedido { get; set; }
+        public int id_estado_pedido { get; set; }
+        public int id_usuario { get; set; }
+        public string Ubicacion { get; set; } // Capitalize 'Ubicacion'
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nSB1IvSW0ygbmbFhfjwk9hkwnb9cK9zwH/2BTOJp16hQRazjDvy4qb1b37l8wZPaXmCEnqLkmqCz+49uyOZ8EQ==",
+  "dgSpecHash": "oJ9AJWR6DNci9skRfMt2GOmfBSYgha55K28HSdrJbc9v2C/zJ5aABX3frwsh4ctQR0Gd9vrbh+sps6QXldN57Q==",
   "success": true,
-  "projectFilePath": "/Users/raulvalencia/Projects/web-api2/ecomerce/Ecomerce/Ecomerce.csproj",
+  "projectFilePath": "/Users/raulvalencia/Projects/ecomerce/Ecomerce/Ecomerce.csproj",
   "expectedPackageFiles": [
     "/Users/raulvalencia/.nuget/packages/azure.core/1.25.0/azure.core.1.25.0.nupkg.sha512",
     "/Users/raulvalencia/.nuget/packages/azure.identity/1.7.0/azure.identity.1.7.0.nupkg.sha512",
