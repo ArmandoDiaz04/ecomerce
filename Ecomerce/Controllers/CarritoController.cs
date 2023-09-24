@@ -122,6 +122,7 @@ namespace Ecomerce.Controllers
             var resultado = carritos.Select(c => new
             {
                 IdCarrito = c.id_carrito,
+                IdProducto = c.Producto.id_producto, // Agrega el id_producto
                 NombreUsuario = c.Usuario.nombre_usuario,
                 NombreProducto = c.Producto.Nombre,
                 PrecioUnitario = c.Producto.Precio / c.Cantidad, // Precio unitario
@@ -132,10 +133,12 @@ namespace Ecomerce.Controllers
 
             return Ok(resultado);
         }
+
         #endregion
 
+
         // hola cambios
-      
+
 
 
         #region ACTUALIZAR - POST

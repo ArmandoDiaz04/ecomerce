@@ -58,7 +58,6 @@ namespace Ecomerce.Controllers
         #endregion
 
 
-
         #region AGREGAR - POST
         [HttpPost]
         [Route("add")]
@@ -70,7 +69,8 @@ namespace Ecomerce.Controllers
                 _context.pedidos.Add(pedido);
                 _context.SaveChanges();
 
-                return Ok(pedido);
+                // Retornar el ID del pedido recién insertado
+                return Ok(new { id_pedido = pedido.id_pedido });
             }
             catch (Exception ex)
             {
@@ -79,6 +79,29 @@ namespace Ecomerce.Controllers
             }
         }
         #endregion
+
+
+
+        //#region AGREGAR - POST
+        //[HttpPost]
+        //[Route("add")]
+        //public IActionResult crear([FromBody] Pedido pedido)
+        //{
+        //    try
+        //    {
+        //        // Agregar un punto de interrupción aquí o agregar un registro
+        //        _context.pedidos.Add(pedido);
+        //        _context.SaveChanges();
+
+        //        return Ok(pedido);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Agregar un punto de interrupción aquí o agregar un registro
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
+        //#endregion
 
         #region ACTUALIZAR - POST
 

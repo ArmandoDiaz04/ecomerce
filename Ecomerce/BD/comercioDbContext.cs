@@ -13,7 +13,7 @@ namespace Ecomerce.BD
 
          public DbSet<Carrito> carrito { get; set; }
          public DbSet<Categoria> categoria { get; set; }
-        public DbSet<DetallePedido> detallepedido { get; set; }
+        public DbSet<DetallePedido> detalle_pedido { get; set; }
         public DbSet<EstadoPedido> estadopedido { get; set; }
         public DbSet<Pedido> pedidos { get; set; }
         public DbSet<Producto> producto { get; set; }

@@ -23,7 +23,7 @@ namespace Ecomerce.Controllers
         [Route("GetAll")]
         public ActionResult Get()
         {
-            List<DetallePedido> detallePedidos = _context.detallepedido.ToList();
+            List<DetallePedido> detallePedidos = _context.detalle_pedido.ToList();
 
             if (detallePedidos.Count == 0)
             {
@@ -40,7 +40,7 @@ namespace Ecomerce.Controllers
         [Route("GetById")]
         public ActionResult GetById(int id)
         {
-            DetallePedido? detalle = _context.detallepedido.Find(id);
+            DetallePedido? detalle = _context.detalle_pedido.Find(id);
 
             if (detalle == null) return NotFound();
 
@@ -48,29 +48,41 @@ namespace Ecomerce.Controllers
         }
         #endregion
 
-
-
         #region AGREGAR - POST
         [HttpPost]
         [Route("add")]
-        public IActionResult crear([FromBody] DetallePedido detalle)
+        public IActionResult crear([FromBody] DetallePedidoInputModel inputModel)
         {
-
             try
             {
-                _context.detallepedido.Add(detalle);
+                // Verificar si los datos son válidos antes de agregarlos
+                if (inputModel == null || inputModel.id_producto <= 0 || inputModel.id_pedido <= 0 || inputModel.cantidad <= 0)
+                {
+                    return BadRequest("Los datos no son válidos.");
+                }
+
+                // Crear un objeto DetallePedido con los valores recibidos
+                var detalle = new DetallePedido
+                {
+                    id_producto = inputModel.id_producto,
+                    id_pedido = inputModel.id_pedido,
+                    cantidad = inputModel.cantidad
+                };
+
+                _context.detalle_pedido.Add(detalle);
                 _context.SaveChanges();
 
                 return Ok(detalle);
-
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                // Registra el error para depuración
+                Console.WriteLine(ex.ToString());
+                return BadRequest("Ocurrió un error al guardar los datos.");
             }
-
         }
         #endregion
+
 
         #region ACTUALIZAR - POST
 
@@ -78,7 +90,7 @@ namespace Ecomerce.Controllers
         [Route("Actualizar/{id}")]
         public IActionResult actualizar(int id, [FromBody] DetallePedido detallePedido)
         {
-            DetallePedido? detalle = _context.detallepedido.Find(id);
+            DetallePedido? detalle = _context.detalle_pedido.Find(id);
 
             if (detalle == null)
             {
@@ -87,7 +99,7 @@ namespace Ecomerce.Controllers
 
             detalle.id_producto = detallePedido.id_producto;
             detalle.id_pedido = detallePedido.id_pedido;
-            detalle.Cantidad = detallePedido.Cantidad;
+            detalle.cantidad = detallePedido.cantidad;
 
 
 
@@ -113,5 +125,11 @@ namespace Ecomerce.Controllers
             }
         }
         #endregion
+    }
+    public class DetallePedidoInputModel
+    {
+        public int? id_producto { get; set; }
+        public int? id_pedido { get; set; }
+        public int cantidad { get; set; }
     }
 }
