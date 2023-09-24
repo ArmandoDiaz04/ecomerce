@@ -124,7 +124,7 @@ namespace Ecomerce.Controllers
                 IdCarrito = c.id_carrito,
                 IdProducto = c.Producto.id_producto, // Agrega el id_producto
                 NombreUsuario = c.Usuario.nombre_usuario,
-                NombreProducto = c.Producto.Nombre,
+                NombreProducto = c.Producto.nombre,
                 PrecioUnitario = c.Producto.Precio / c.Cantidad, // Precio unitario
                 Total = c.Producto.Precio, // Total (precio del producto)
                 Cantidad = c.Cantidad,

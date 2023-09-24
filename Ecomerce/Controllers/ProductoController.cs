@@ -64,7 +64,7 @@ namespace Ecomerce.Controllers
                 // Filtra por el término 'q' si se proporciona
                 if (!string.IsNullOrEmpty(q))
                 {
-                    productosFiltrados = productosFiltrados.Where(p => p.Nombre.Contains(q)).ToList();
+                    productosFiltrados = productosFiltrados.Where(p => p.nombre.Contains(q)).ToList();
                 }
 
                 // Aplica el límite si se proporciona y es un valor positivo
@@ -79,7 +79,7 @@ namespace Ecomerce.Controllers
             // Filtra por el término 'q' si se proporciona
             if (!string.IsNullOrEmpty(q))
             {
-                query = query.Where(p => p.Nombre.Contains(q));
+                query = query.Where(p => p.nombre.Contains(q));
             }
 
             // Aplica el límite si se proporciona y es un valor positivo
@@ -117,7 +117,7 @@ namespace Ecomerce.Controllers
 
 
 
-      
+     
         #region AGREGAR - POST
         [HttpPost]
         [Route("add")]
@@ -138,8 +138,10 @@ namespace Ecomerce.Controllers
             }
 
         }
-        
         #endregion
+
+
+
 
 
         #region ACTUALIZAR-Subasta
@@ -189,13 +191,13 @@ namespace Ecomerce.Controllers
                 return NotFound();
             }
 
-            estado.Nombre = producto.Nombre;
+            estado.nombre = producto.nombre;
             estado.Precio = producto.Precio;
             estado.precio_subasta = producto.precio_subasta;
             estado.imagen_url = producto.imagen_url;
-            estado.Descripcion = producto.Descripcion;
+            estado.descripcion = producto.descripcion;
             estado.id_categoria = producto.id_categoria;
-            estado.Estado = producto.Estado;
+            estado.estado = producto.estado;
             estado.fecha_inicio = producto.fecha_inicio;
             estado.fecha_final = producto.fecha_final;
             estado.tipo_producto = producto.tipo_producto;
