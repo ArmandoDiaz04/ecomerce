@@ -6,12 +6,35 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Ecomerce/Controllers/ProductoController.cs">
+    <Files>
+      <File FileName="Ecomerce/Models/Producto.cs" Line="7" Column="4" />
+      <File FileName="Ecomerce/Models/EstadoPedido.cs" Line="1" Column="1" />
+      <File FileName="Ecomerce/Models/Usuario.cs" Line="1" Column="1" />
+      <File FileName="Ecomerce/Controllers/ProductoController.cs" Line="284" Column="14" />
+      <File FileName="Ecomerce/Controllers/PedidoController.cs" Line="81" Column="19" />
+      <File FileName="Ecomerce/Controllers/CarritoController.cs" Line="69" Column="1" />
+      <File FileName="Ecomerce/Models/DetallePedido.cs" Line="11" Column="21" />
+      <File FileName="Ecomerce/Models/Pedido.cs" Line="1" Column="1" />
+      <File FileName="Ecomerce/Controllers/DetallePedidoController.cs" Line="56" Column="16" />
+      <File FileName="Ecomerce/Controllers/CategoriaController.cs" Line="1" Column="1" />
+      <File FileName="Ecomerce/Program.cs" Line="42" Column="1" />
+      <File FileName="Ecomerce/Controllers/EstadoPedidoController.cs" Line="1" Column="1" />
+      <File FileName="Ecomerce/BD/comercioDbContext.cs" Line="16" Column="51" />
+      <File FileName="Ecomerce/WeatherForecast.cs" Line="1" Column="1" />
+      <File FileName="Ecomerce/BD/DB_script.sql" Line="1" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Ecomerce">
-            <Node name="Ecomerce" selected="True" />
+            <Node name="Ecomerce">
+              <Node name="BD" expanded="True" />
+              <Node name="Controllers">
+                <Node name="ProductoController.cs" selected="True" />
+              </Node>
+              <Node name="Models" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
