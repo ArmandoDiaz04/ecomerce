@@ -22,5 +22,8 @@ namespace Ecomerce.Models
         public int id_usuario { get; set; }
         public int? id_usuario_ultima_puja { get; set; }
 
+
+
+
     }
 }
