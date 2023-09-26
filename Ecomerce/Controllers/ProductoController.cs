@@ -48,7 +48,7 @@ namespace Ecomerce.Controllers
         #region GET_ALL - GET
         [HttpGet]
         [Route("GetAll")]
-        public ActionResult Get([FromQuery] string? q, [FromQuery] int? limit, [FromQuery] string? tipo)
+        public ActionResult Get([FromQuery] string? q, [FromQuery] int? limit, [FromQuery] int? categoria, [FromQuery] string? tipo)
         {
             // Consulta la base de datos para obtener todos los productos
             IQueryable<Producto> query = _context.producto;
@@ -62,9 +62,17 @@ namespace Ecomerce.Controllers
                     .ToList();
 
                 // Filtra por el término 'q' si se proporciona
-                if (!string.IsNullOrEmpty(q))
+                if (!string.IsNullOrEmpty(q) && categoria.HasValue && categoria.Value > 0)
+                {
+                    productosFiltrados = productosFiltrados.Where(p => p.nombre.Contains(q) && p.id_categoria == categoria.Value).ToList();
+                }
+                else if (!string.IsNullOrEmpty(q))
                 {
                     productosFiltrados = productosFiltrados.Where(p => p.nombre.Contains(q)).ToList();
+                }
+                else if (categoria.HasValue && categoria.Value > 0)
+                {
+                    productosFiltrados = productosFiltrados.Where(p => p.id_categoria == categoria.Value).ToList();
                 }
 
                 // Aplica el límite si se proporciona y es un valor positivo
@@ -72,6 +80,8 @@ namespace Ecomerce.Controllers
                 {
                     productosFiltrados = productosFiltrados.Take(limit.Value).ToList();
                 }
+
+
 
                 return Ok(productosFiltrados);
             }
@@ -98,7 +108,7 @@ namespace Ecomerce.Controllers
 
             return Ok(productos);
         }
-        #endregion
+        #endregion
         #region GET_ALL subastas - GET
         [HttpGet]
         [Route("GetAllSB")]
