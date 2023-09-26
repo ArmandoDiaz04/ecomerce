@@ -58,7 +58,7 @@ namespace Ecomerce.Controllers
             {
                 // Aplicamos la parte de la consulta en memoria después de obtener los resultados de la base de datos.
                 var productosFiltrados = query.ToList()
-                    .Where(p => p.tipo_producto.Equals(tipo, StringComparison.OrdinalIgnoreCase))
+                    .Where(p => p.tipo_producto.Equals(tipo, StringComparison.OrdinalIgnoreCase) && p.estado == 0) 
                     .ToList();
 
                 // Filtra por el término 'q' si se proporciona
