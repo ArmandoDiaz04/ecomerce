@@ -3,6 +3,7 @@ using Ecomerce.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Ecomerce.Controllers
 {
@@ -168,6 +169,29 @@ namespace Ecomerce.Controllers
 
             return Ok(productos);
         }
+        #endregion
+        #region GET_ALL subasta cerrada/ganada
+        [HttpGet]
+        [Route("GetProductosByUserId/{userId}")]
+        public ActionResult GetProductosByUserId(int userId)
+        {
+            // Filtra los productos por estado activo (estado = 1) y el id_usuario_ultima_puja igual a userId
+            IQueryable<Producto> query = _context.producto
+                .Where(p => p.estado == 1 && p.id_usuario_ultima_puja == userId && p.tipo_producto == "subasta");
+
+            // Ejecuta la consulta y obtiene los resultados
+            List<Producto> productos = query.ToList();
+
+            if (productos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(productos);
+        }
+
+
+
 
         #endregion
         #region GET_ALL ventas abiertas - GET
