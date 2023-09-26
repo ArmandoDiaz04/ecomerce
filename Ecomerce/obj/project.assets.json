@@ -3297,23 +3297,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Juanjo\\.nuget\\packages\\": {},
+    "C:\\Users\\Esau\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Juanjo\\Documents\\MisArchivos\\web_libre\\Ecommerce\\api\\ecomerce\\Ecomerce\\Ecomerce.csproj",
+      "projectUniqueName": "C:\\Users\\Esau\\Desktop\\API\\ecomerce\\Ecomerce\\Ecomerce.csproj",
       "projectName": "Ecomerce",
-      "projectPath": "C:\\Users\\Juanjo\\Documents\\MisArchivos\\web_libre\\Ecommerce\\api\\ecomerce\\Ecomerce\\Ecomerce.csproj",
-      "packagesPath": "C:\\Users\\Juanjo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Juanjo\\Documents\\MisArchivos\\web_libre\\Ecommerce\\api\\ecomerce\\Ecomerce\\obj\\",
+      "projectPath": "C:\\Users\\Esau\\Desktop\\API\\ecomerce\\Ecomerce\\Ecomerce.csproj",
+      "packagesPath": "C:\\Users\\Esau\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Esau\\Desktop\\API\\ecomerce\\Ecomerce\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Juanjo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Esau\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3388,7 +3388,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
