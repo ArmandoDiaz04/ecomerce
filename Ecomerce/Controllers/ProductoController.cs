@@ -133,10 +133,46 @@ namespace Ecomerce.Controllers
         #region GET_ALL subastas abierta - GET
         [HttpGet]
         [Route("GetSBabiertas")]
-        public ActionResult GetSubastasAbiertas()
+        public ActionResult GetSubastasAbiertas([FromQuery] string? q, [FromQuery] int? limit, [FromQuery] string? tipo)
         {
-            // Filtra los productos por estado activo (por ejemplo, estado = 0 es abiertas)
-            IQueryable<Producto> query = _context.producto.Where(p => p.estado == 0 && p.tipo_producto == "subasta");
+
+            // Consulta la base de datos para obtener todos los productos
+            IQueryable<Producto> query = _context.producto;
+
+            // Filtra por el tipo de producto si se proporciona (venta o Subasta)
+            if (!string.IsNullOrEmpty(tipo))
+            {
+                // Aplicamos la parte de la consulta en memoria después de obtener los resultados de la base de datos.
+                var productosFiltrados = query.ToList()
+                    .Where(p => p.tipo_producto.Equals(tipo, StringComparison.OrdinalIgnoreCase) && p.estado == 0)
+                    .ToList();
+
+                // Filtra por el término 'q' si se proporciona
+                if (!string.IsNullOrEmpty(q))
+                {
+                    productosFiltrados = productosFiltrados.Where(p => p.nombre.Contains(q)).ToList();
+                }
+
+                // Aplica el límite si se proporciona y es un valor positivo
+                if (limit.HasValue && limit.Value > 0)
+                {
+                    productosFiltrados = productosFiltrados.Take(limit.Value).ToList();
+                }
+
+                return Ok(productosFiltrados);
+            }
+
+            // Filtra por el término 'q' si se proporciona
+            if (!string.IsNullOrEmpty(q))
+            {
+                query = query.Where(p => p.nombre.Contains(q));
+            }
+
+            // Aplica el límite si se proporciona y es un valor positivo
+            if (limit.HasValue && limit.Value > 0)
+            {
+                query = query.Take(limit.Value);
+            }
 
             // Ejecuta la consulta y obtiene los resultados
             List<Producto> productos = query.ToList();
@@ -147,6 +183,9 @@ namespace Ecomerce.Controllers
             }
 
             return Ok(productos);
+
+
+           
         }
 
         #endregion
