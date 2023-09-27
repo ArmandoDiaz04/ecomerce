@@ -128,7 +128,10 @@ namespace Ecomerce.Controllers
                 PrecioUnitario = c.Producto.Precio / c.Cantidad, // Precio unitario
                 Total = c.Producto.Precio, // Total (precio del producto)
                 Cantidad = c.Cantidad,
-                FechaAgregado = c.fecha_agregado
+                FechaAgregado = c.fecha_agregado,
+                precioSubasta = c.Producto.precio_subasta,
+                tipoProducto = c.Producto.tipo_producto,
+                id_ultimaPuja = c.Producto.id_usuario_ultima_puja
             });
 
             return Ok(resultado);
