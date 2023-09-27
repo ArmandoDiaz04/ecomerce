@@ -125,6 +125,19 @@ namespace Ecomerce.Controllers
             }
         }
         #endregion
+        //#region ELIMINAR - DELETE 
+        //[HttpDelete]
+        //[Route("deleteUsuario/{id}")]
+        //public void DeleteCarrito(int id)
+        //{
+        //    var detalle = _context.Set<DetallePedido>().FirstOrDefault(u => u. == id);
+        //    if (detalle != null)
+        //    {
+        //        _context.Set<DetallePedido>().Remove(detalle);
+        //        _context.SaveChanges();
+        //    }
+        //}
+        //#endregion
     }
     public class DetallePedidoInputModel
     {

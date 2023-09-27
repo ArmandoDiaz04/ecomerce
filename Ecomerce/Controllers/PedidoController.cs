@@ -173,6 +173,28 @@ namespace Ecomerce.Controllers
             }
         }
         #endregion
+        #region ELIMINAR-POR-USER
+        [HttpDelete]
+        [Route("deletePedidobyUser/{id}")]
+        public void DeleteCarritoByUser(int id)
+        {
+            // Obtén todos los pedidos del usuario
+            var pedidos = _context.Set<Pedido>().Where(u => u.id_usuario == id).ToList();
+
+            // Itera a través de los pedidos y elimina sus detalles
+            foreach (var pedido in pedidos)
+            {
+                var detallesPedido = _context.Set<DetallePedido>().Where(d => d.id_pedido == pedido.id_pedido).ToList();
+                _context.Set<DetallePedido>().RemoveRange(detallesPedido);
+            }
+
+            // Elimina los pedidos del usuario
+            _context.Set<Pedido>().RemoveRange(pedidos);
+
+            // Guarda los cambios en la base de datos
+            _context.SaveChanges();
+        }
+        #endregion
     }
     public class PedidoInputModel
     {
