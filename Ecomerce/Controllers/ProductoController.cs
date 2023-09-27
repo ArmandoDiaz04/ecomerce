@@ -437,16 +437,29 @@ namespace Ecomerce.Controllers
         #endregion
         #region ELIMINAR - DELETE 
         [HttpDelete]
-        [Route("deleteUsuario/{id}")]
-        public void DeleteCarrito(int id)
+        [Route("deleteProducto/{id}")]
+        public IActionResult DeleteProducto(int id)
         {
-            var pedido = _context.Set<Pedido>().FirstOrDefault(u => u.id_pedido == id);
-            if (pedido != null)
+            try
             {
-                _context.Set<Pedido>().Remove(pedido);
+                var producto = _context.producto.FirstOrDefault(p => p.id_producto == id);
+
+                if (producto == null)
+                {
+                    return NotFound(); // Devolver un error 404 si el producto no se encuentra
+                }
+
+                _context.producto.Remove(producto);
                 _context.SaveChanges();
+
+                return Ok(); // Devolver un código 200 OK si la eliminación fue exitosa
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
         #endregion
     }
     public class PujaInputModel
