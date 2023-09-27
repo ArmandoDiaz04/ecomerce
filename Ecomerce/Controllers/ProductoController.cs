@@ -323,16 +323,23 @@ namespace Ecomerce.Controllers
 
             try
             {
-                if (producto.tipo_producto == "Subasta")
-                {
-                    // Si el tipo de producto es "Subasta", establecer precio_subasta
-                    producto.precio_subasta = producto.Precio;
-                    producto.Precio = 0;
-                }
-                _context.producto.Add(producto);
-                _context.SaveChanges();
+                
+                    _context.producto.Add(producto);
+                    _context.SaveChanges();
 
-                return Ok(producto);
+                    return Ok(producto);
+
+               
+
+               
+                //if (producto.tipo_producto == "Subasta")
+                //{
+                //    // Si el tipo de producto es "Subasta", establecer precio_subasta
+                //    producto.precio_subasta = producto.Precio;
+                //    producto.Precio = 0;
+                //}
+
+              
 
             }
             catch (Exception ex)
