@@ -49,7 +49,7 @@ namespace Ecomerce.Controllers
         #region GET_ALL - GET
         [HttpGet]
         [Route("GetAll")]
-        public ActionResult Get([FromQuery] string? q, [FromQuery] int? limit, [FromQuery] string? tipo)
+        public ActionResult Get([FromQuery] string? q, [FromQuery] int? limit, [FromQuery] int? categoria, [FromQuery] string? tipo)
         {
             // Consulta la base de datos para obtener todos los productos
             IQueryable<Producto> query = _context.producto;
@@ -59,7 +59,104 @@ namespace Ecomerce.Controllers
             {
                 // Aplicamos la parte de la consulta en memoria después de obtener los resultados de la base de datos.
                 var productosFiltrados = query.ToList()
-                    .Where(p => p.tipo_producto.Equals(tipo, StringComparison.OrdinalIgnoreCase))
+                    .Where(p => p.tipo_producto.Equals(tipo, StringComparison.OrdinalIgnoreCase) && p.estado == 0) 
+                    .ToList();
+
+                // Filtra por el término 'q' si se proporciona
+                if (!string.IsNullOrEmpty(q) && categoria.HasValue && categoria.Value > 0)
+                {
+                    productosFiltrados = productosFiltrados.Where(p => p.nombre.Contains(q) && p.id_categoria == categoria.Value).ToList();
+                }
+                else if (!string.IsNullOrEmpty(q))
+                {
+                    productosFiltrados = productosFiltrados.Where(p => p.nombre.Contains(q)).ToList();
+                }
+                else if (categoria.HasValue && categoria.Value > 0)
+                {
+                    productosFiltrados = productosFiltrados.Where(p => p.id_categoria == categoria.Value).ToList();
+                }
+
+                // Aplica el límite si se proporciona y es un valor positivo
+                if (limit.HasValue && limit.Value > 0)
+                {
+                    productosFiltrados = productosFiltrados.Take(limit.Value).ToList();
+                }
+
+
+
+                return Ok(productosFiltrados);
+            }
+
+            // Filtra por el término 'q' si se proporciona
+            if (!string.IsNullOrEmpty(q))
+            {
+                query = query.Where(p => p.nombre.Contains(q));
+            }
+
+            // Aplica el límite si se proporciona y es un valor positivo
+            if (limit.HasValue && limit.Value > 0)
+            {
+                query = query.Take(limit.Value);
+            }
+
+            // Ejecuta la consulta y obtiene los resultados
+            List<Producto> productos = query.ToList();
+
+            if (productos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(productos);
+        }
+        #endregion
+        #region GET_ALL subastas - GET
+        [HttpGet]
+        [Route("GetAllSB")]
+        public ActionResult GetSb([FromQuery] string? q, [FromQuery] int? limit)
+        {
+            // Consulta la base de datos para obtener todos los productos
+            IQueryable<Producto> query = _context.producto.Where(producto => producto.tipo_producto.ToUpper() == "SUBASTA");
+
+            // Filtra por el término 'q' si se proporciona
+            if (!string.IsNullOrEmpty(q))
+            {
+                query = query.Where(p => p.nombre.Contains(q));
+            }
+
+            // Aplica el límite si se proporciona y es un valor positivo
+            if (limit.HasValue && limit.Value > 0)
+            {
+                query = query.Take(limit.Value);
+            }
+
+            // Ejecuta la consulta y obtiene los resultados
+            List<Producto> productos = query.ToList();
+
+            if (productos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(productos);
+        }
+
+        #endregion
+        #region GET_ALL subastas abierta - GET
+        [HttpGet]
+        [Route("GetSBabiertas")]
+        public ActionResult GetSubastasAbiertas([FromQuery] string? q, [FromQuery] int? limit, [FromQuery] string? tipo)
+        {
+
+            // Consulta la base de datos para obtener todos los productos
+            IQueryable<Producto> query = _context.producto;
+
+            // Filtra por el tipo de producto si se proporciona (venta o Subasta)
+            if (!string.IsNullOrEmpty(tipo))
+            {
+                // Aplicamos la parte de la consulta en memoria después de obtener los resultados de la base de datos.
+                var productosFiltrados = query.ToList()
+                    .Where(p => p.tipo_producto.Equals(tipo, StringComparison.OrdinalIgnoreCase) && p.estado == 0)
                     .ToList();
 
                 // Filtra por el término 'q' si se proporciona
@@ -98,57 +195,9 @@ namespace Ecomerce.Controllers
             }
 
             return Ok(productos);
-        }
-        #endregion
-        #region GET_ALL subastas - GET
-        [HttpGet]
-        [Route("GetAllSB")]
-        public ActionResult GetSb([FromQuery] string? q, [FromQuery] int? limit)
-        {
-            // Consulta la base de datos para obtener todos los productos
-            IQueryable<Producto> query = _context.producto.Where(producto => producto.tipo_producto.ToUpper() == "SUBASTA");
 
-            // Filtra por el término 'q' si se proporciona
-            if (!string.IsNullOrEmpty(q))
-            {
-                query = query.Where(p => p.nombre.Contains(q));
-            }
 
-            // Aplica el límite si se proporciona y es un valor positivo
-            if (limit.HasValue && limit.Value > 0)
-            {
-                query = query.Take(limit.Value);
-            }
-
-            // Ejecuta la consulta y obtiene los resultados
-            List<Producto> productos = query.ToList();
-
-            if (productos.Count == 0)
-            {
-                return NotFound();
-            }
-
-            return Ok(productos);
-        }
-
-        #endregion
-        #region GET_ALL subastas abierta - GET
-        [HttpGet]
-        [Route("GetSBabiertas")]
-        public ActionResult GetSubastasAbiertas()
-        {
-            // Filtra los productos por estado activo (por ejemplo, estado = 0 es abiertas)
-            IQueryable<Producto> query = _context.producto.Where(p => p.estado == 0 && p.tipo_producto == "subasta");
-
-            // Ejecuta la consulta y obtiene los resultados
-            List<Producto> productos = query.ToList();
-
-            if (productos.Count == 0)
-            {
-                return NotFound();
-            }
-
-            return Ok(productos);
+           
         }
 
         #endregion
