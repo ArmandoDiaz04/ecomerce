@@ -401,6 +401,35 @@ namespace Ecomerce.Controllers
             }
         }
         #endregion
+        #region ACTUALIZAR-Subasta-estado-aNULL
+        [HttpPut]
+        [Route("ActualizarEstadoSubasta/{id}A NULL")]
+        public IActionResult ActualizarEstadoNull(int id)
+        {
+            Producto? producto = _context.producto.Find(id);
+
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            // Verifica si la puja es mayor que el precio actual de subasta antes de actualizar
+            if (producto.estado == 1)
+            {
+                // Actualiza el precio de subasta y cualquier otro campo necesario
+                producto.estado = 3;
+
+                _context.Entry(producto).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return Ok(producto);
+            }
+            else
+            {
+                return BadRequest("La puja debe ser mayor que el precio de subasta actual.");
+            }
+        }
+        #endregion
         #region ACTUALIZAR - POST
 
         [HttpPut]

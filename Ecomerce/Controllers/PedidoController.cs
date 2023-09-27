@@ -52,12 +52,14 @@ namespace Ecomerce.Controllers
             var datosUnidos = (from p in _context.pedidos
                                join d in _context.detalle_pedido on p.id_pedido equals d.id_pedido
                                join u in _context.usuarios on p.id_usuario equals u.id_usuario
+                               join pd in _context.producto on d.id_producto equals pd.id_producto
                                where p.id_usuario == idUsuario
                                select new
                                {
                                    Pedido = p,
                                    DetallesPedido = d,
-                                   Usuario = u
+                                   Usuario = u,
+                                   Producto = pd
                                }).ToList();
 
             if (datosUnidos.Count == 0)

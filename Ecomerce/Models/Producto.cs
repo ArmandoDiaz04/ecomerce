@@ -15,7 +15,7 @@ namespace Ecomerce.Models
         public string imagen_url { get; set; }
         public string descripcion { get; set; }
         public int id_categoria { get; set; }
-        public int estado { get; set; }
+        public int? estado { get; set; }
         public DateTime fecha_inicio { get; set; }
         public DateTime fecha_final { get; set; }
         public string tipo_producto { get; set; }
