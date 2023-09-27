@@ -43,6 +43,35 @@ namespace Ecomerce.Controllers
         }
 
         #endregion
+        #region GET_ALL - Datos Unidos
+        [HttpGet]
+        [Route("GetAllscc")]
+        public ActionResult GetDatosUnidos(int idUsuario)
+        {
+            // Realiza una consulta LINQ para obtener los datos necesarios
+            var datosUnidos = (from p in _context.pedidos
+                               join d in _context.detalle_pedido on p.id_pedido equals d.id_pedido
+                               join u in _context.usuarios on p.id_usuario equals u.id_usuario
+                               where p.id_usuario == idUsuario
+                               select new
+                               {
+                                   Pedido = p,
+                                   DetallesPedido = d,
+                                   Usuario = u
+                               }).ToList();
+
+            if (datosUnidos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(datosUnidos);
+        }
+
+
+
+        #endregion
+
 
         #region GET_BY_ID - GET
         [HttpGet]
@@ -150,5 +179,11 @@ namespace Ecomerce.Controllers
         public int id_estado_pedido { get; set; }
         public int id_usuario { get; set; }
         public string Ubicacion { get; set; } // Capitalize 'Ubicacion'
+    }
+    public class FacturaData
+    {
+        public object Pedido { get; set; }
+        public object DetallesPedido { get; set; }
+        public object Usuario { get; set; }
     }
 }

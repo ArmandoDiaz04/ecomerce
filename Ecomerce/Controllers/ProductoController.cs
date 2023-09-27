@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace Ecomerce.Controllers
 {
+    //con los nuevos endpoints
     [Route("api/[controller]")]
     [ApiController]
     public class ProductoController : ControllerBase
@@ -151,13 +152,52 @@ namespace Ecomerce.Controllers
         }
 
         #endregion
+        #region GET_ALL subastas abierta user
+        [HttpGet]
+        [Route("GetSBabiertasByUser")]
+        public ActionResult GetSubastasAbiertas([FromQuery] int? id_usuario)
+        {
+            // Filtra los productos por estado activo (por ejemplo, estado = 0 es abiertas)
+            IQueryable<Producto> query = _context.producto.Where(p => p.estado == 0 && p.tipo_producto == "subasta" && p.id_usuario == id_usuario);
+
+            // Ejecuta la consulta y obtiene los resultados
+            List<Producto> productos = query.ToList();
+
+            if (productos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(productos);
+        }
+
+        #endregion
         #region GET_ALL subasta cerrada - GET
         [HttpGet]
         [Route("GetSBcerradas")]
         public ActionResult GetSubastasCerrada()
         {
             // Filtra los productos por estado activo (por ejemplo, estado = 0 es abiertas)
-            IQueryable<Producto> query = _context.producto.Where(p => p.estado == 1 && p.tipo_producto == "subasta");
+            IQueryable<Producto> query = _context.producto.Where(p => p.estado == 1 && p.tipo_producto == "subasta" );
+
+            // Ejecuta la consulta y obtiene los resultados
+            List<Producto> productos = query.ToList();
+
+            if (productos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(productos);
+        }
+        #endregion
+        #region GET_ALL subasta cerradabyuser
+        [HttpGet]
+        [Route("GetSBcerradasbyuser")]
+        public ActionResult GetSubastasCerrada([FromQuery] int? id_usuario)
+        {
+            // Filtra los productos por estado activo (por ejemplo, estado = 0 es abiertas)
+            IQueryable<Producto> query = _context.producto.Where(p => p.estado == 1 && p.tipo_producto == "subasta" && p.id_usuario == id_usuario);
 
             // Ejecuta la consulta y obtiene los resultados
             List<Producto> productos = query.ToList();
